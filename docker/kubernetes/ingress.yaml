@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-sga-ingress
+  annotations:
+    # ingress.gcp.kubernetes.io/pre-shared-cert: rama-judicial
+    kubernetes.io/ingress.global-static-ip-name: sga-api-lb
+    # ingress.kubernetes.io/auth-tls-secret: ca
+    # kubernetes.io/ingress.allow-http: "false"
+spec:
+  tls:
+  - hosts:
+    - sga-api-ejrlb.ramajudicial.gov.co
+    secretName: ssl-api-sga
+  rules:
+  - host: sga-api-ejrlb.ramajudicial.gov.co
+    http:
+      paths:
+      - path: /*
+        pathType: "ImplementationSpecific"
+        backend:
+          service:
+            name: api-sga-service
+            port:
+              number: 80
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: api-sga-ingress
+# spec:
+#   tls:
+#   - hosts:
+#     - api-sga.escuelajudicial.ramajudicial.gov.co
+#     secretName: ssl-ejrlb
+#   rules:
+#   - host: api-sga.escuelajudicial.ramajudicial.gov.co
+#     http:
+#       paths:
+#       - path: /
+#         backend:
+#           serviceName: api-sga-service
+#           servicePort: http

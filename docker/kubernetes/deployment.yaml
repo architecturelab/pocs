@@ -1,0 +1,55 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "api-sga"
+  namespace: "default"
+  labels:
+    app: "api-sga"
+spec:
+  minReadySeconds: 10
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "api-sga"
+  template:
+    metadata:
+      labels:
+        app: "api-sga"
+    spec:
+      containers:
+      - name: "api-sga"
+        image: "gcr.io/ejrlb-293820/api-sga:v0.0.8.32"     
+        # lifecycle:
+        #   postStart:
+        #     exec:
+        #       command: ["/usr/local/bin/php", "/var/www/artisan", "queue:work"]
+        imagePullPolicy: "Always"
+        resources:
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+            ephemeral-storage: "4Gi"
+          requests:
+            memory: "4Gi"
+            cpu: "2"
+            ephemeral-storage: "4Gi"
+---
+apiVersion: "autoscaling/v2beta2"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "api-sga"
+  namespace: "default"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-sga
+  minReplicas: 1
+  maxReplicas: 32
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60

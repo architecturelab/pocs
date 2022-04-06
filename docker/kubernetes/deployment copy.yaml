@@ -1,0 +1,110 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "api-sga"
+  namespace: "default"
+  labels:
+    app: "api-sga"
+spec:
+  minReadySeconds: 10
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "api-sga"
+  strategy:
+    rollingUpdate:
+      maxSurge: 30%
+      maxUnavailable: 30%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "api-sga"
+    spec:
+      containers:
+      - name: "api-sga"
+        image: "gcr.io/ejrlb-293820/api-sga:v0.0.7.32"
+        command: ["/usr/local/bin/php", "artisan", "queue:work"]
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/local/bin/php", "artisan", "queue:work"]
+        # imagePullPolicy: "Always"
+        # livenessProbe:
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 15
+        #   tcpSocket:
+        #     port: 80
+        #   timeoutSeconds: 30
+        # ports:
+        # - containerPort: 80
+        # readinessProbe:
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 10
+        #   tcpSocket:
+        #     port: 80
+        resources:
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+            ephemeral-storage: "4Gi"
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+            ephemeral-storage: "2Gi"
+        # Set env variables used for database connection
+      #   env:
+      #     - name: DB_USER
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: cloudsql-db-credentials
+      #           key: username
+      #     - name: DB_PASS
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: cloudsql-db-credentials
+      #           key: password
+      #     - name: DB_NAME
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: cloudsql-db-credentials
+      #           key: dbname
+      # - name: "cloudsql-proxy"
+      #   image: gcr.io/cloudsql-docker/gce-proxy:1.23.0
+      #   command: ["/cloud_sql_proxy",
+      #             "-instances=ejrlb-293820:us-east1:ejrlb-test-2=tcp:3306",
+      #             "-credential_file=/secrets/cloudsql/sql_credentials.json"]
+      #   volumeMounts:
+      #     - name: "my-secrets-volume"
+      #       mountPath: /secrets/cloudsql
+      #       readOnly: true
+      # volumes:
+      #   - name: my-secrets-volume
+      #     secret:
+      #       secretName: cloudsql-instance-credentials
+---
+apiVersion: "autoscaling/v2beta2"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "api-sga"
+  namespace: "default"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-sga
+  minReplicas: 1
+  maxReplicas: 32
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+  # - type: Resource
+  #   resource:
+  #     name: memory
+  #     target:
+  #       type: AverageValue
+  #       averageValue: 100Mi
