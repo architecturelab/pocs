@@ -23,4 +23,4 @@ spec:
       - name: backend
         image: us.gcr.io/basearchitecture/img-lumen
         ports:
-        - containerPort: 3800
+        - containerPort: 80
