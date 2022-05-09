@@ -42,7 +42,7 @@ RUN chmod -R 777 /var/www/storage/logs/
 
 # setup composer and laravel
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --working-dir="/var/www"
+RUN composer install --prefer-dist --working-dir="/var/www"
 # RUN composer require phpoffice/phpspreadsheet:1.18.0 --working-dir="/var/www"
 RUN composer dump-autoload --working-dir="/var/www"
 # RUN composer update --working-dir="/var/www"
