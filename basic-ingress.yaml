@@ -3,6 +3,14 @@ kind: Ingress
 metadata:
   name: basic-ingress
 spec:
-  backend:
-    serviceName: lumen-app
-    servicePort: 8080
+  ingressClassName: nginx-example
+  rules:
+    - http:
+        paths:
+          - path: /*
+            pathType: Prefix
+            backend:
+              service:
+                name: lumen-app
+                port:
+                  number: 8080
