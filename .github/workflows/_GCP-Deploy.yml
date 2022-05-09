@@ -15,6 +15,8 @@ jobs:
         env:
           IMAGE_NAME: us.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
         steps:
+        - name: Checkout
+          uses: actions/checkout@v3
 
         - name: Login
           uses: google-github-actions/setup-gcloud@v0
@@ -26,14 +28,8 @@ jobs:
         - name: Configure Docker
           run: gcloud auth configure-docker --quiet
 
-        - name: Checkout repository
-          uses: actions/checkout@v2
-
         - name: Build Docker image
-          run: docker build . -t $IMAGE_NAME
-
-        - name: Test Docker image
-          run: docker run $IMAGE_NAME sh -c "go test -v"
+          run: docker build -t $IMAGE_NAME .
 
         - name: Push Docker image
           run: docker push $IMAGE_NAME
