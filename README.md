@@ -36,6 +36,8 @@ Prueba de concepto microservicio sobre Kubernetes en GCLOUD.
 -   https://www.youtube.com/watch?v=16fgzklcF7Y
 ### CI/CD GitHub GCP
 -   https://cloud.google.com/community/tutorials/cicd-cloud-run-github-actions
+### Kustomize
+-   https://github.com/google-github-actions/setup-gcloud/tree/main/example-workflows/gke-kustomize
 ### GKE with DNS
 -   https://cloud.google.com/kubernetes-engine/docs/how-to/cloud-dns
 
