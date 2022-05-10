@@ -6,7 +6,7 @@ WORKDIR /var/www
 # Install dependencies
 RUN apt-get update \
     # gd
-    && apt-get install zip -y --no-install-recommends build-essential nginx \
+    && apt-get install zip git -y --no-install-recommends build-essential nginx \
     # && apt-get install -y --no-install-recommends build-essential  openssl nginx libfreetype6-dev libjpeg-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev gcc g++ make vim unzip curl git jpegoptim optipng pngquant gifsicle locales libonig-dev \
     # && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     # && docker-php-ext-install gd \
