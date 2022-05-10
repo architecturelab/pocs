@@ -24,20 +24,12 @@ jobs:
             project_id: ${{ secrets.GCP_PROJECT_ID }}
             service_account_email: ${{ secrets.GCP_EMAIL }}
             service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-            cluster_name: cluster-main
-        - name: Setting project
-          run: |
-            gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-            gcloud config set run/region us-central1
 
-#        - name: Configure Docker
-#          run: gcloud auth configure-docker --quiet
+        - name: Configure Docker
+          run: gcloud auth configure-docker --quiet
 
-#        - name: Configure Docker
-#          run: gcloud auth configure-docker --quiet
+        - name: Build Docker image
+          run: docker build -t $IMAGE_NAME .
 
-#        - name: Build Docker image
-#          run: docker build -t $IMAGE_NAME .
-
-#        - name: Push Docker image
-#          run: docker push $IMAGE_NAME
+        - name: Push Docker image
+          run: docker push $IMAGE_NAME
