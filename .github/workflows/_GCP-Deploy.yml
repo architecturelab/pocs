@@ -25,11 +25,17 @@ jobs:
             service_account_email: ${{ secrets.GCP_EMAIL }}
             service_account_key: ${{ secrets.GCP_CREDENTIALS }}
 
-        - name: Configure Docker
-          run: gcloud auth configure-docker --quiet
+        - name: Deploy 
+          run: kubectl apply -f deploy-app.yml
 
-        - name: Build Docker image
-          run: docker build -t $IMAGE_NAME .
+#        - name: Configure Docker
+#          run: gcloud auth configure-docker --quiet
 
-        - name: Push Docker image
-          run: docker push $IMAGE_NAME
+#        - name: Configure Docker
+#          run: gcloud auth configure-docker --quiet
+
+#        - name: Build Docker image
+#          run: docker build -t $IMAGE_NAME .
+
+#        - name: Push Docker image
+#          run: docker push $IMAGE_NAME
