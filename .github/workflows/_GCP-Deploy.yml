@@ -33,7 +33,7 @@ jobs:
         - name: Setup gcloud CLI
         - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
           with:
-            service_account_key: ${{ secrets.GCP_EMAIL }}
+            service_account_key: ${{ secrets.GCP_CREDENTIALS }}
             project_id: ${{ secrets.GCP_PROJECT_ID }}
 
         - name: helper for authentication
