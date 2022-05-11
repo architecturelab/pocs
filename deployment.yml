@@ -21,6 +21,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: us-central1-docker.pkg.dev/basearchitecture/quickstart-docker-repo/static-site:17cd7d3c6495fbc2bf16a71033d55e53e20acbec
+        # image: us.gcr.io/basearchitecture/microservice-lumen-docker_lumen
+        image: us-central1-docker.pkg.dev/basearchitecture/quickstart-docker-repo/static-site:f8aa8222c1f8b7325b2612303146eb9d1aa4dd33
         ports:
         - containerPort: 80
