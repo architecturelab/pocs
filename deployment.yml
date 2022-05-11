@@ -21,6 +21,6 @@ spec:
     spec:
       containers:
       - name: backend
-        image: LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG
+        image: us-central1-docker.pkg.dev/basearchitecture/quickstart-docker-repo/static-site:17cd7d3c6495fbc2bf16a71033d55e53e20acbec
         ports:
         - containerPort: 80
